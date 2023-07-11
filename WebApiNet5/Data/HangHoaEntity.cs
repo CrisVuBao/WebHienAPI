@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,5 +23,12 @@ namespace WebApiNet5.Data
         public int? MaLoai { get; set; }
         [ForeignKey("MaLoai")]
         public Loai Loai { get; set; }
+
+        public ICollection<ChiTietDonHang> DonHangChiTiets { get; set; }
+
+        public HangHoaEntity()
+        {
+            DonHangChiTiets = new HashSet<ChiTietDonHang>(); // t ko muốn nó hiện null, nên nếu chưa có dữ liệu thì để là danh sách rỗng
+        }
     }
 }
