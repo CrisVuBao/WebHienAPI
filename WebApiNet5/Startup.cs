@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApiNet5.Data;
+using WebApiNet5.Services;
 
 namespace WebApiNet5
 {
@@ -35,6 +36,8 @@ namespace WebApiNet5
             {
                 option.UseSqlServer(Configuration.GetConnectionString("MyDB"));
             });
+
+            services.AddScoped<ILoaiResponsitory, LoaiResponsitory>();
 
             services.AddSwaggerGen(c =>
             {
