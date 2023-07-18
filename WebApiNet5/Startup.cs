@@ -38,6 +38,7 @@ namespace WebApiNet5
             });
 
             services.AddScoped<ILoaiResponsitory, LoaiResponsitory>();
+            services.AddScoped<IHangHoaReponsitory, HangHoaReponsitory>();
 
             services.AddSwaggerGen(c =>
             {
