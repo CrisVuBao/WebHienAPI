@@ -10,19 +10,19 @@ namespace WebApiNet5.Data
     public class HangHoaEntity
     {
         [Key]
-        public Guid MaHHdb { get; set; }
+        public Guid MaHH { get; set; }
 
         [Required] // bắt buộc nhập
         [MaxLength(100)]
-        public string TenHHdb { get; set; }
-        public string MoTadb { get; set; }
+        public string TenHH { get; set; }
+        public string MoTa { get; set; }
 
         [Range(0, double.MaxValue)]
-        public int DonGiadb { get; set; }
-        public byte GiamGiadb { get; set; }
-        public int? MaLoaidb { get; set; }
+        public int DonGia { get; set; }
+        public byte GiamGia { get; set; }
+        public int? MaLoai { get; set; }
         [ForeignKey("MaLoai")]
-        public Loai Loaidb { get; set; }
+        public Loai Loai { get; set; }
 
         public ICollection<ChiTietDonHang> DonHangChiTiets { get; set; }
 

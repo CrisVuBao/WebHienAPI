@@ -11,17 +11,17 @@ namespace WebApiNet5.Controllers
     {
         private readonly IHangHoaReponsitory _hangHoaReponsitory;
 
-        public ProductsController(IHangHoaReponsitory hangHoaReponsitory) 
+        public ProductsController(IHangHoaReponsitory hangHoaReponsitory)
         {
             _hangHoaReponsitory = hangHoaReponsitory; // _hangHoaRepository là biến được tạo để lấy các thuộc tính bên trong Interface IHangHoaRepository
         }
 
-        [HttpGet]
-        public IActionResult GetFull() 
+        [HttpGet("{id}")] // nếu thêm {id} thì khi trên swagger, phải bắt buộc nhập id
+        public IActionResult GetFull(double? from, double? to, string sortBy) 
         {
             try
             {
-                var resultFull = _hangHoaReponsitory.GetFull();
+                var resultFull = _hangHoaReponsitory.GetFull(from, to, sortBy);
                 return Ok(resultFull);
             } catch
             {
@@ -29,12 +29,12 @@ namespace WebApiNet5.Controllers
             }
         }
 
-        [HttpGet("{search}")]
-        public IActionResult GetAllProducts(string search)
+        [HttpGet]
+        public IActionResult GetAllProducts(string search, double? from, double? to, string sortBy, int page = 1)
         {
             try
             {
-                var resutl = _hangHoaReponsitory.GetAll(search);
+                var resutl = _hangHoaReponsitory.GetAll(search, from, to, sortBy, page);
                 return Ok(resutl);
             } catch
             {
@@ -54,5 +54,7 @@ namespace WebApiNet5.Controllers
                 return BadRequest("Not Add Product!!!");
             }
         }
+
+        
     }
 }
