@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,12 +8,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using WebApiNet5.Data;
+using WebApiNet5.Models;
 using WebApiNet5.Services;
 
 namespace WebApiNet5
@@ -40,6 +44,30 @@ namespace WebApiNet5
             services.AddScoped<ILoaiResponsitory, LoaiResponsitory>();
             services.AddScoped<IHangHoaReponsitory, HangHoaReponsitory>();
 
+            // Mapping with AppSettings để lấy SecretKey
+            services.Configure<AppSetting>(Configuration.GetSection("AppSettings"));
+
+            #region JWT (Json Web Token)
+            var secretKey = Configuration["AppSettings:SecretKey"];
+            var secretKeyBytes = Encoding.UTF8.GetBytes(secretKey); // chuyển SecretKey thành kiểu 010101 để máy đọc được
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    // Tự cấp token
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+
+                    // ký vào token
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(secretKeyBytes),
+
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+            #endregion
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiNet5", Version = "v1" });
@@ -59,6 +87,8 @@ namespace WebApiNet5
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

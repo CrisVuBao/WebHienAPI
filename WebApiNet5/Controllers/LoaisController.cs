@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using WebApiNet5.Data;
@@ -34,6 +35,7 @@ namespace WebApiNet5.Controllers
         }
 
         [HttpPost]
+        [Authorize] // phải phân quyền, để khi đăng nhập đúng là admin thì mới được thêm loại hàng hóa
         public IActionResult CreateNew(LoaiModel model)
         {
             try

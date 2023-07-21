@@ -8,6 +8,7 @@ namespace WebApiNet5.Data
         public MyDbContext(DbContextOptions options) : base(options) { }
 
         #region DbSet 
+        public DbSet<NguoiDungEntity> NguoiDungs { get; set; }
         public DbSet<HangHoaEntity> HangHoas { get; set; } // dbset đại diện cho một tập các thực thể hàng hóa
         
         public DbSet<Loai> Loais { get; set; }
@@ -39,6 +40,14 @@ namespace WebApiNet5.Data
                     .WithMany(e => e.DonHangChiTiets)
                     .HasForeignKey(e => e.MaHH)
                     .HasConstraintName("FK_CTDonHang_HangHoa");
+            });
+
+            modelBuilder.Entity<NguoiDungEntity>(entity =>
+            {
+                entity.HasIndex(e => e.UserName).IsUnique(); // UserName phải là duy nhất
+                entity.Property(e => e.HoTen).IsRequired().HasMaxLength(150);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(150);
+                
             });
         }
     }
