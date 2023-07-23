@@ -8,6 +8,7 @@ namespace WebApiNet5.Data
         public MyDbContext(DbContextOptions options) : base(options) { }
 
         #region DbSet 
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<NguoiDungEntity> NguoiDungs { get; set; }
         public DbSet<HangHoaEntity> HangHoas { get; set; } // dbset đại diện cho một tập các thực thể hàng hóa
         
